@@ -39,14 +39,15 @@
  #   useXkbConfig = true; # use xkb.options in tty.
   #};
 
+
 # enable wayland
- services.xserver = {
-	  enable = true;
-	  xkb = {
-	      layout = "se";
-	      variant = "";
-	  };
-  };
+# services.xserver = {
+#  enable = true;
+#  xkb = {
+#      layout = "se";
+#      variant = "";
+#  };
+#  };
   
  services.displayManager.ly = {
 	 enable = true;
@@ -107,11 +108,9 @@
         stow
         ly
         tmux
-	
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
   # programs.mtr.enable = true;
   # programs.gnupg.agent = {
   #   enable = true;
@@ -152,6 +151,20 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.11"; # Did you read the comment?
+
+fonts.packages = with pkgs; [
+  font-awesome
+  noto-fonts
+  noto-fonts-cjk-sans
+  noto-fonts-emoji
+  fira-code
+  fira-code-symbols
+  mplus-outline-fonts.githubRelease
+  dina-font
+  proggyfonts
+];
+
+fonts.enableDefaultPackages = true;
 
 }
 
