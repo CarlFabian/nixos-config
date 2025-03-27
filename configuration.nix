@@ -62,6 +62,9 @@
       ly
       tmux
       nixd
+      pavucontrol
+      brightnessctl
+      networkmanagerapplet
   ];
 
   fonts.packages = with pkgs; [
