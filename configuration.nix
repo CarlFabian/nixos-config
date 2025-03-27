@@ -46,12 +46,11 @@
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk];
 
   environment.systemPackages = with pkgs; [
-    waybar
+      waybar
       dunst
       libnotify
       swww
       rofi-wayland
-      kitty
       alacritty
       vim
       neovim
@@ -66,7 +65,7 @@
   ];
 
   fonts.packages = with pkgs; [
-    font-awesome
+     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; } )
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
