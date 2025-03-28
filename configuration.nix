@@ -65,7 +65,10 @@
       pavucontrol
       brightnessctl
       networkmanagerapplet
+      vesktop
   ];
+
+environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   fonts.packages = with pkgs; [
      (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; } )
