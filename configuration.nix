@@ -35,6 +35,7 @@
 # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
+
   users.users.oscar = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
@@ -43,11 +44,26 @@
   programs.firefox.enable = true;
   programs.hyprland.enable = true;
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk];
+  xdg.portal.extraPortals = with pkgs; [ 
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+  ];
+  xdg.portal.config = {
+	  common = {
+		  default = [
+			  "hyprland"
+			  "gtk"
+		  ];
+	  };
+  };
+
+  security.rtkit.enable = true;
 
   environment.systemPackages = with pkgs; [
       waybar
       dunst
+      hypridle
+      hyprlock
       libnotify
       swww
       rofi-wayland
@@ -68,7 +84,7 @@
       vesktop
   ];
 
-environment.sessionVariables.NIXOS_OZONE_WL = "1";
+ environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   fonts.packages = with pkgs; [
      (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; } )
