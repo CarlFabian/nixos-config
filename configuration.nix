@@ -41,8 +41,19 @@
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   };
 
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+	  "steam"
+	  "steam-unwrapped"
+	  "steam-original"
+	  "steam-run"
+          "spotify"
+	  "bitwig-studio"
+  ];
+  
+  programs.steam.enable = true;
   programs.firefox.enable = true;
   programs.hyprland.enable = true;
+  programs.thunar.enable = true;
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [ 
       xdg-desktop-portal-gtk
@@ -82,6 +93,20 @@
       brightnessctl
       networkmanagerapplet
       vesktop
+      grim
+      swappy
+      slurp
+      wl-clipboard
+      spotify
+      qbittorrent
+      (pkgs.bitwig-studio.overrideAttrs (oldAttrs: rec {
+                         version = "5.0.4";
+                         src = pkgs.fetchurl {
+                         url = "https://www.bitwig.com/dl/Bitwig%20Studio/${version}/installer_linux/";
+                         sha256 = "15hk8mbyda0isbqng00wd0xcp8g91117lkg6f5b2s0xylf858j12";
+                         };
+                         }))
+     guitarix
   ];
 
  environment.sessionVariables.NIXOS_OZONE_WL = "1";
