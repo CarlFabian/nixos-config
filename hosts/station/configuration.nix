@@ -17,7 +17,7 @@
   driSupport32Bit = true;
 
 };
-nixpkgs.config.allowUnfree = true;
+
 hardware.nvidia.open = false;
 
   boot.loader.systemd-boot.enable = true;
@@ -33,21 +33,33 @@ hardware.nvidia.open = false;
     enable = true;
   };
 
-  services.pipewire = {
+services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
+    extraConfig.pipewire.adjust-sample-rate = {
+	"context.properties" = {
+		"default.clock.rate" = 48000;
+		"default.clock.quantum" = 128;
+		"default.clock.min-quantum" = 128;
+		"default.clock.max-quantum" = 128;
+	};
+    };
   };
 
-# Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
+services.pipewire.extraConfig.pipewire."92-low-latency" = {
+};
 
+security.rtkit.enable = true;
 
   users.users.oscar = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+	  isNormalUser = true;
+	  extraGroups = [ "wheel"
+		  "audio"
+
+	  ];
   };
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
@@ -56,13 +68,39 @@ hardware.nvidia.open = false;
 	  "steam-original"
 	  "steam-run"
           "spotify"
-	  "bitwig-studio"
+          "nvidia-x11"
+          "nvidia-settings"
   ];
   
   programs.steam.enable = true;
   programs.firefox.enable = true;
   programs.hyprland.enable = true;
+
+# Thunar stuff
   programs.thunar.enable = true;
+  programs.xfconf.enable = true;
+  programs.thunar.plugins = with pkgs.xfce; [
+	  thunar-archive-plugin
+	  thunar-volman
+  ];
+  services.gvfs.enable = true; # Mount, trash, and other functionalities
+  services.tumbler.enable = true; # Thumbnail support for images
+
+  services.flatpak.enable = true;
+  systemd.services.flatpak-repo = {
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.flatpak ];
+    script = ''
+      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    '';
+  };
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
+
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [ 
       xdg-desktop-portal-gtk
@@ -77,46 +115,38 @@ hardware.nvidia.open = false;
 	  };
   };
 
-  security.rtkit.enable = true;
-
   environment.systemPackages = with pkgs; [
-      waybar
-      dunst
-      hypridle
-      hyprlock
-      libnotify
-      swww
-      rofi-wayland
-      alacritty
-      vim
-      neovim
-      wget
-      docker
-      fastfetch
-      git 
-      stow
-      ly
-      tmux
-      nixd
-      pavucontrol
-      brightnessctl
-      networkmanagerapplet
-      vesktop
-      grim
-      swappy
-      slurp
-      wl-clipboard
-      spotify
-      qbittorrent
-      (pkgs.bitwig-studio.overrideAttrs (oldAttrs: rec {
-                         version = "5.0.4";
-                         src = pkgs.fetchurl {
-                         url = "https://www.bitwig.com/dl/Bitwig%20Studio/${version}/installer_linux/";
-                         sha256 = "15hk8mbyda0isbqng00wd0xcp8g91117lkg6f5b2s0xylf858j12";
-                         };
-                         }))
-     guitarix
-  ];
+	  waybar
+	  dunst
+	  hypridle
+	  hyprlock
+	  libnotify
+	  swww
+	  rofi-wayland
+	  alacritty
+	  vim
+	  neovim
+	  wget
+	  docker
+	  fastfetch
+	  git 
+	  stow
+	  ly
+	  tmux
+	  nixd
+	  pavucontrol
+	  brightnessctl
+	  networkmanagerapplet
+	  vesktop
+	  grim
+	  swappy
+	  slurp
+	  wl-clipboard
+	  spotify
+	  qbittorrent
+	  guitarix
+	  helvum
+	  ];
 
  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 

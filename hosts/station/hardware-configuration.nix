@@ -24,6 +24,26 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
+  fileSystems."/mnt/1TB" =
+    { device = "/dev/disk/by-uuid/C88070A1807097A0";
+      fsType = "ntfs3";
+    };
+
+  fileSystems."/mnt/Debian" =
+    { device = "/dev/disk/by-uuid/d4ad6574-d38e-4778-840a-c91860b640a6";
+      fsType = "ext4";
+    };
+
+  fileSystems."/mnt/1TB2" =
+    { device = "/dev/disk/by-uuid/9EF0C6F2F0C6D027";
+      fsType = "ntfs3";
+    };
+
+  fileSystems."/mnt/3TB" =
+    { device = "/dev/disk/by-uuid/EA0A53D50A539CFF";
+      fsType = "ntfs3";
+    };
+
   swapDevices =
     [ { device = "/dev/disk/by-uuid/51f1074b-bc0d-46d1-8d8b-6153b584c410"; }
     ];
