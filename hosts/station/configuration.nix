@@ -82,6 +82,15 @@ services.jellyfin = {
 	openFirewall = true;
 };
 
+services.immich = {
+        host = "0.0.0.0";
+        enable = true;
+        port = 2283;
+	openFirewall = true;
+        mediaLocation = "/mnt/1TB2/immich";
+        machine-learning.enable = false;
+};
+
 services.flatpak.enable = true;
 systemd.services.flatpak-repo = {
 	wantedBy = [ "multi-user.target" ];
@@ -149,7 +158,10 @@ systemd.services.flatpak-repo = {
 	  guitarix
 	  helvum
 	  kate
-          bat
+          neural-amp-modeler-lv2
+          blender
+          super-slicer-latest
+          freecad-wayland
 	  ];
 
  environment.sessionVariables.NIXOS_OZONE_WL = "1";
