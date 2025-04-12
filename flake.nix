@@ -14,6 +14,7 @@
       modules = [
          inputs.musnix.nixosModules.musnix
         ./hosts/station/configuration.nix
+        ./modules/nvidia.nix
       ];
     };
 

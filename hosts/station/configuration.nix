@@ -12,16 +12,6 @@
   ]; 
   nixpkgs.config.allowUnfree = true;
 
-  #Nvidia
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware =  {
-	  graphics = {
-		  enable = true;
-		  enable32Bit = true;
-	  };
-	  nvidia.open = false;
-  };
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
@@ -35,8 +25,17 @@
     enable = true;
   };
 
-  services.pipewire = {
+  services.xserver = {
 	  enable = true;
+	  xkb.layout = "se";
+	  windowManager.i3.enable = true;
+	  displayManager.startx.enable = false; # handled by ly
+  };
+
+
+
+  services.pipewire = {
+		  enable = true;
 	  alsa.enable = true;
 	  alsa.support32Bit = true;
 	  pulse.enable = true;
@@ -133,6 +132,7 @@ systemd.services.flatpak-repo = {
 	  hyprlock
 	  libnotify
 	  swww
+	  feh
 	  rofi-wayland
 	  alacritty
 	  vim
@@ -162,6 +162,9 @@ systemd.services.flatpak-repo = {
           blender
           super-slicer-latest
           freecad-wayland
+          i3lock-fancy
+          picom
+          polybar
 	  ];
 
  environment.sessionVariables.NIXOS_OZONE_WL = "1";
