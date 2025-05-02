@@ -27,16 +27,19 @@
   fileSystems."/mnt/1TB" =
     { device = "/dev/disk/by-uuid/C88070A1807097A0";
       fsType = "ntfs3";
+      options = [ "nofail" ];
     };
 
   fileSystems."/mnt/1TB2" =
     { device = "/dev/disk/by-uuid/9EF0C6F2F0C6D027";
       fsType = "ntfs3";
+      options = [ "nofail" ];
     };
 
   fileSystems."/mnt/3TB" =
     { device = "/dev/disk/by-uuid/EA0A53D50A539CFF";
       fsType = "ntfs3";
+      options = [ "nofail" ];
     };
 
   swapDevices =

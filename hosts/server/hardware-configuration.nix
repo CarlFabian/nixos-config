@@ -27,6 +27,7 @@
   fileSystems."/seagate" =
     { device = "/dev/disk/by-uuid/cf4de0c7-127d-4f92-aef2-f5f2dccf5126";
       fsType = "ext4";
+      options = [ "nofail" ];
     };
 
   swapDevices =
