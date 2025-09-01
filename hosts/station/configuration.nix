@@ -32,6 +32,11 @@
 	  displayManager.startx.enable = false; # handled by ly
   };
 
+# Need this for tmux for some reason
+programs.bash.interactiveShellInit = ''
+  export HISTCONTROL=ignoredups
+  export PS1="\[\e[32m\][\u@\h:\w]\$\[\e[0m\] "
+'';
 
 
   services.pipewire = {
@@ -96,13 +101,17 @@ systemd.services.flatpak-repo = {
 
 
   # Disable sleep
-  systemd.sleep.extraConfig = ''
-    AllowSuspend=no
-    AllowHibernation=no
-    AllowHybridSleep=no
-    AllowSuspendThenHibernate=no
-    '';
+  #systemd.sleep.extraConfig = ''
+  #  AllowSuspend=no
+  #  AllowHibernation=no
+  #  AllowHybridSleep=no
+  #  AllowSuspendThenHibernate=no
+  #  '';
 
+programs.appimage = {
+	enable = true;
+	binfmt = true;
+};
   programs.steam.enable = true;
   programs.firefox.enable = true;
   programs.hyprland.enable = true;
@@ -130,8 +139,9 @@ systemd.services.flatpak-repo = {
 	  feh
 	  rofi-wayland
 	  alacritty
+          unzip
 	  vim
-	  neovim
+	  ripgrep
 	  wget
 	  docker
 	  fastfetch
@@ -143,7 +153,7 @@ systemd.services.flatpak-repo = {
 	  pavucontrol
 	  brightnessctl
 	  networkmanagerapplet
-	  vesktop
+	  discord
 	  grim
 	  swappy
 	  slurp
@@ -160,6 +170,9 @@ systemd.services.flatpak-repo = {
           i3lock-fancy
           picom
           polybar
+          ardour
+          audacity
+          rpi-imager
 	  ];
 
  environment.sessionVariables.NIXOS_OZONE_WL = "1";
