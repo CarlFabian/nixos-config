@@ -29,6 +29,7 @@
       system = "x86_64-linux";
       modules = [
         ./hosts/server/configuration.nix
+        ./modules/media_server.nix
       ];
     };
   };

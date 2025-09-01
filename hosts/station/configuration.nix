@@ -76,11 +76,6 @@ programs.thunar.plugins = with pkgs.xfce; [
 services.gvfs.enable = true; # Mount, trash, and other functionalities
 services.tumbler.enable = true; # Thumbnail support for images
 
-services.jellyfin = {
-	enable = true;
-	openFirewall = true;
-};
-
 services.immich = {
         host = "0.0.0.0";
         enable = true;
