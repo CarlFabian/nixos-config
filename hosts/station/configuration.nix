@@ -60,6 +60,17 @@ KERNEL=="rtc0", GROUP="audio"
 KERNEL=="hpet", GROUP="audio"
 '';
 
+# Dolphin gamecube controller
+services.udev.packages = [ pkgs.dolphin-emu ];
+boot.extraModulePackages = [ 
+	config.boot.kernelPackages.gcadapter-oc-kmod
+];
+
+# to autoload at boot:
+boot.kernelModules = [ 
+	"gcadapter_oc"
+];
+
 security.rtkit.enable = true;
 
 users.users.oscar = {
@@ -129,51 +140,57 @@ programs.appimage = {
 	  };
   };
 
-  environment.systemPackages = with pkgs; [
-	  waybar
-	  dunst
-	  hypridle
-	  hyprlock
-	  libnotify
-	  swww
-	  feh
-	  rofi-wayland
-	  alacritty
-          unzip
-	  vim
-	  ripgrep
-	  wget
-	  docker
-	  fastfetch
-	  git 
-	  stow
-	  ly
-	  tmux
-	  nixd
-	  pavucontrol
-	  brightnessctl
-	  networkmanagerapplet
-	  discord
-	  grim
-	  swappy
-	  slurp
-	  wl-clipboard
-	  spotify
-	  qbittorrent
-	  guitarix
-	  helvum
-	  kate
-          neural-amp-modeler-lv2
-          blender
-          super-slicer-latest
-          freecad-wayland
-          i3lock-fancy
-          picom
-          polybar
-          ardour
-          audacity
-          rpi-imager
-	  ];
+environment.systemPackages = with pkgs; [
+	waybar
+	dunst
+	hypridle
+	hyprlock
+	libnotify
+	swww
+	feh
+	rofi-wayland
+	alacritty
+	unzip
+	vim
+	ripgrep
+	wget
+	docker
+	fastfetch
+	git 
+	stow
+	ly
+	tmux
+	nixd
+	pavucontrol
+	brightnessctl
+	networkmanagerapplet
+	discord
+	grim
+	swappy
+	slurp
+	wl-clipboard
+	spotify
+	qbittorrent
+	guitarix
+	helvum
+	kate
+	neural-amp-modeler-lv2
+	blender
+	super-slicer-latest
+	freecad-wayland
+	i3lock-fancy
+	picom
+	polybar
+	ardour
+	audacity
+	rpi-imager
+	vlc
+	dolphin-emu
+	chromium
+	simplescreenrecorder
+	kdenlive
+	flameshot
+	];
 
  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
