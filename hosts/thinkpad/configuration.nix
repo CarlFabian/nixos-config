@@ -77,7 +77,7 @@
       hyprlock
       libnotify
       swww
-      rofi-wayland
+      rofi
       alacritty
       vim
       neovim
@@ -112,10 +112,9 @@
  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   fonts.packages = with pkgs; [
-     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; } )
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       fira-code
       fira-code-symbols
       mplus-outline-fonts.githubRelease

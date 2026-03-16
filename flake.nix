@@ -2,40 +2,56 @@
   description = "A simple NixOS flake";
 
   inputs = {
-    # NixOS official package source
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    musnix  = { url = "github:musnix/musnix"; };
-    nixCats.url = "github:BirdeeHub/nixCats-nvim";
+    nixpkgs.url          = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    musnix.url           = "github:musnix/musnix";
+    nixCats.url          = "github:BirdeeHub/nixCats-nvim";
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+  outputs = { self, nixpkgs, nixpkgs-unstable, musnix, nixCats, ... }@inputs:
+  let
+    system = "x86_64-linux";
+  in {
 
-      # Inject inputs so modules can access them
-      specialArgs = { inherit inputs; };
-
-      modules = [
-         inputs.musnix.nixosModules.musnix
-        ./hosts/station/configuration.nix
-        ./modules/nvidia.nix
-        ./modules/nixCats-nvim.nix
-      ];
+    overlays = {
+      unstable-packages = final: _prev: {
+        unstable = import nixpkgs-unstable {
+          inherit (final) system;
+          config.allowUnfree = true;
+        };
+      };
     };
 
-    nixosConfigurations.nixpad = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./hosts/thinkpad/configuration.nix
-      ];
-    };
+    nixosConfigurations = {
+      nixos = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs; };
+        modules = [
+          { nixpkgs.overlays = [ self.overlays.unstable-packages ]; }
+          musnix.nixosModules.musnix
+          ./hosts/station/configuration.nix
+          ./modules/nvidia.nix
+          ./modules/nixCats-nvim.nix
+        ];
+      };
 
-    nixosConfigurations.nixserver = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./hosts/server/configuration.nix
-        ./modules/media_server.nix
-      ];
+      nixpad = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/thinkpad/configuration.nix
+        ];
+      };
+
+      nixserver = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/server/configuration.nix
+          ./modules/media_server.nix
+        ];
+      };
+
     };
   };
 }

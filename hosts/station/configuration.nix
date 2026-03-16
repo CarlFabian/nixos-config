@@ -124,7 +124,6 @@ programs.appimage = {
 	binfmt = true;
 };
   programs.steam.enable = true;
-  programs.firefox.enable = true;
   programs.hyprland.enable = true;
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [ 
@@ -148,7 +147,7 @@ environment.systemPackages = with pkgs; [
 	libnotify
 	swww
 	feh
-	rofi-wayland
+	rofi
 	alacritty
 	unzip
 	vim
@@ -171,9 +170,10 @@ environment.systemPackages = with pkgs; [
 	wl-clipboard
 	spotify
 	qbittorrent
-	guitarix
-	helvum
-	kate
+	(unstable.guitarix.overrideAttrs (old: {
+									  buildInputs = old.buildInputs ++ [ pkgs.boost ];
+									  }))	
+    helvum
 	neural-amp-modeler-lv2
 	blender
 	super-slicer-latest
@@ -188,17 +188,19 @@ environment.systemPackages = with pkgs; [
 	dolphin-emu
 	chromium
 	simplescreenrecorder
-	kdenlive
 	flameshot
+	btop
 	];
 
  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   fonts.packages = with pkgs; [
-     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; } )
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.fira-code
+      nerd-fonts.hack
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       fira-code
       fira-code-symbols
       mplus-outline-fonts.githubRelease
